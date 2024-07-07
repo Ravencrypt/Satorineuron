@@ -75,16 +75,22 @@ check_docker_container() {
 }
 check_docker_container satorineuron
 
+
+#!/bin/bash
+
 # Create Cronjob to restart Docker & Service
 RESTART_SCRIPT="/usr/local/bin/restart_satorineuron_and_service.sh"
-bash -c "echo '#!/bin/bash' > $RESTART_SCRIPT"
-bash -c "echo 'docker restart satorineuron' >> $RESTART_SCRIPT"
-bash -c "echo 'sleep 300' >> $RESTART_SCRIPT"
-bash -c "echo 'systemctl restart satori.service' >> $RESTART_SCRIPT"
-chmod +x $RESTART_SCRIPT
-(crontab -l 2>/dev/null; echo '0 18 * * * /bin/bash /usr/local/bin/restart_satorineuron_and_service.sh') | crontab -') | crontab -
+sudo bash -c "echo '#!/bin/bash' > $RESTART_SCRIPT"
+sudo bash -c "echo 'docker restart satorineuron' >> $RESTART_SCRIPT"
+sudo bash -c "echo 'sleep 300' >> $RESTART_SCRIPT"
+sudo bash -c "echo 'systemctl restart satori.service' >> $RESTART_SCRIPT"
+sudo chmod +x $RESTART_SCRIPT
 
-echo "Cron job setup completed successfully"
+# Set up the cron job to run the script at 6:00 PM every day
+(crontab -l 2>/dev/null; echo '0 18 * * * /bin/bash /usr/local/bin/restart_satorineuron_and_service.sh') | crontab -
+
+echo "Cron job setup completed successfully."
+
 
 #Copy Walletfile to Home
 cp -r ~/.satori/wallet ~
